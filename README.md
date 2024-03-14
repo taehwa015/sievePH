@@ -1,22 +1,13 @@
 # `sievePH`: R package for fitting the proportional hazards model with sieve maximum full likelihood estimation
 
-
 ## Overview
 
-`sievePH` is the R package to fit the proportional hazards model with sieve maximum full likelihood estimation.
+`sievePH` is the R package to fit the proportional hazards model with sieve maximum full likelihood estimation. In this package, we provide two functions `smle_ph` and `smle_resid`. `smle_ph` fits the proportional hazards model 
 
 ## Installation
 ```r
 devtools::install_github(repo='taehwa015/sievePH')
 ```
-
-## Status of development
-
-The code provided here is only being provided for research purposes.
-
-## Documentation
-
-Vignette is available at [here](http://htmlpreview.github.io/?https://github.com/taehwa015/sievePH/blob/master/vignettes/sievePH.html).
 
 ## Usage
 

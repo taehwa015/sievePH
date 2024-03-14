@@ -1,4 +1,6 @@
-#' @importFrom stats as.formula lm predict sd
+#' @importFrom stats as.formula lm predict sd quantile optim pnorm
+#' @importFrom splines2 mSpline
+#' @importFrom MASS ginv
 NULL
 #' Fit the full likelihood proportional hazards model
 #'
@@ -19,7 +21,7 @@ NULL
 #' see Halabi et al., (2024+) for detailed method explanation.
 #'
 #' @references
-#'
+#' Halabi et al., (2024+) Sieve maximum full likelihood estimation for the proportional hazards model
 #'
 #'
 #' @examples
@@ -28,27 +30,24 @@ NULL
 #' library(sievePH)
 #' set.seed(111)
 #' n = 200
+#' beta = c(1, -1, 0.5, -0.5, 1)
 #' p = length(beta)
 #' beta = matrix(beta, ncol = 1)
-#' R = matrix(c(rep(r, p^2)), ncol = p)
+#' R = matrix(c(rep(0, p^2)), ncol = p)
 #' diag(R) = 1
 #' mu = rep(0, p)
 #' SD = rep(1, p)
 #' S = R * (SD %*% t(SD))
-#' x = mvrnorm(n, mu, S)
+#' x = MASS::mvrnorm(n, mu, S)
 #' T = (-log(runif(n)) / (2 * exp(x %*% beta)))^(1/2)
-#' C = runif(n,0,c1)
-#' y = apply(cbind(T,C),1,min)
-#' d = (T<=C)+0
+#' C = runif(n, min = 0, max = 2.9)
+#' y = apply(cbind(T,C), 1, min)
+#' d = (T <= C)+0
 #' ord = order(y)
 #' y = y[ord]; x = x[ord,]; d = d[ord]
 #' smle_ph(y = y, d = d, x = x)
 #' }
 #' @export
-#'
-#'
-#'
-
 
 smle_ph = function(y,
                    d,
@@ -63,7 +62,7 @@ smle_ph = function(y,
     ord = order(y)
     ut = y = y[ord]
     d = d[ord]
-    x = as.matrix(x)[ord,]
+    x = as.matrix(as.matrix(x)[ord,])
     if (nknots == 0) {
       knots = numeric(0)
     } else {
@@ -113,7 +112,7 @@ smle_ph = function(y,
     ord = order(y)
     ut = y = y[ord]
     d = d[ord]
-    x = as.matrix(x)[ord,]
+    x = as.matrix(as.matrix(x)[ord,])
     n = nrow(x); p = ncol(x); q = length(theta) - p
     cvec = diag(1, p+q)
     A = matrix(0, n, p+q)
@@ -128,14 +127,14 @@ smle_ph = function(y,
   ord = order(y)
   ut = y = y[ord]
   d = d[ord]
-  x = as.matrix(x)[ord,]
+  x = as.matrix(as.matrix(x)[ord,])
   grids = expand.grid(3, 0:(floor(nrow(x)^(1/3))))
   like_val = apply(grids, 1, function(a) phfunc_sieve(y, d, x, a[1], a[2])$like)
   val = -2*like_val + 2*rowSums(grids)*log(log(nrow(x)))
   opt = as.numeric(grids[which.min(val),])
   tmp = phfunc_sieve(y, d, x, opt[1], opt[2])
   tmp$opt = opt
-  tmp$se = var_func(y, d, x, tmp,hn=0.1*nrow(dat)^(-1/2))
+  tmp$se = var_func(y, d, x, tmp,hn=0.1*nrow(x)^(-1/2))
 
   coef.smr = data.frame("Coefficients" = tmp$coef,
                         "Std.Err"= tmp$se,
@@ -149,4 +148,5 @@ smle_ph = function(y,
 
 
 
+# devtools::check(cran=TRUE)
 # roxygen2::roxygenize()

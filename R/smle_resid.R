@@ -1,4 +1,6 @@
-#' @importFrom stats as.formula lm predict sd
+#' @importFrom stats as.formula lm predict sd quantile
+#' @importFrom splines2 mSpline
+#' @importFrom MASS ginv
 NULL
 #' Extract residuals of the full likelihood proportional hazards model
 #'
@@ -17,7 +19,7 @@ NULL
 #' see Halabi et al., (2024+) for detailed method explanation.
 #'
 #' @references
-#'
+#' Halabi et al., (2024+) Sieve maximum full likelihood estimation for the proportional hazards model
 #'
 #'
 #' @examples
@@ -26,18 +28,19 @@ NULL
 #' library(sievePH)
 #' set.seed(111)
 #' n = 200
+#' beta = c(1, -1, 0.5, -0.5, 1)
 #' p = length(beta)
 #' beta = matrix(beta, ncol = 1)
-#' R = matrix(c(rep(r, p^2)), ncol = p)
+#' R = matrix(c(rep(0, p^2)), ncol = p)
 #' diag(R) = 1
 #' mu = rep(0, p)
 #' SD = rep(1, p)
 #' S = R * (SD %*% t(SD))
-#' x = mvrnorm(n, mu, S)
+#' x = MASS::mvrnorm(n, mu, S)
 #' T = (-log(runif(n)) / (2 * exp(x %*% beta)))^(1/2)
-#' C = runif(n,0,c1)
-#' y = apply(cbind(T,C),1,min)
-#' d = (T<=C)+0
+#' C = runif(n, min = 0, max = 2.9)
+#' y = apply(cbind(T,C), 1, min)
+#' d = (T <= C)+0
 #' ord = order(y)
 #' y = y[ord]; x = x[ord,]; d = d[ord]
 #' fit = smle_ph(y = y, d = d, x = x)
@@ -45,21 +48,18 @@ NULL
 #' smle_resid(y = y, d = d, x = x, fit = fit, type = "score")
 #' }
 #' @export
-#'
-#'
-#'
 
 
-residfun = function(y,
-                    d,
-                    x,
-                    fit,
-                    type = c("score","deviance"))
+smle_resid = function(y,
+                      d,
+                      x,
+                      fit,
+                      type = c("score","deviance"))
 {
   ord = order(y)
   ut = y = y[ord]
   d = d[ord]
-  x = as.matrix(x)[ord,]
+  x = as.matrix(as.matrix(x)[ord,])
   beta = fit$Coef[,1]; Haz = fit$Cum.hazard[,1]
   xbeta = drop(x%*%beta)
   if (type == "score") res = ((x*(d-Haz*exp(xbeta))))
@@ -76,7 +76,3 @@ residfun = function(y,
   }
   res
 }
-
-
-
-# roxygen2::roxygenize()
