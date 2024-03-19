@@ -4,20 +4,21 @@ Title: Sieve Maximum Full Likelihood Estimation for the Right-censored Proportio
 Version: 0.1.0
 Authors@R: c(
     person(given = "Susan", 
-	   first = "Halabi",
+	   family = "Halabi",
 	   role = c("aut"),
 	   email = "susan.halabi@duke.edu"),
     person(given = "Taehwa", 
-	   first = "Choi",
+	   family = "Choi",
 	   role = c("aut","cre"),
 	   email = "taehwa015@gmail.com"),
     person(given = "Yuan", 
-	   first = "Wu",
+	   family = "Wu",
 	   role = c("aut"),
-	   email = "yuan.wu@duke.edu"))
+	   email = "yuan.wu@duke.edu")
+    )
 Author: Susan Halabi [aut],
-    	Taehwa Choi [aut, cre],
-        Yuan Wu [aut]
+    Taehwa Choi [aut, cre],
+    Yuan Wu [aut]
 Maintainer: Taehwa Choi <taehwa015@gmail.com>
 Description: Fitting the full likelihood proportional hazards model and
     extracting the residuals.
