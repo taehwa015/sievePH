@@ -1,46 +1,20 @@
-# `sievePH`: R package for fitting the proportional hazards model with sieve maximum full likelihood estimation
+# `smlePH`: R package for fitting the proportional hazards model with sieve maximum full likelihood estimation
 
 ## Overview
 
-`sievePH` is the R package to fit the proportional hazards model with sieve maximum full likelihood estimation. In this package, we provide two functions `smle_ph` and `smle_resid`. `smle_ph` fits the proportional hazards model 
+`smlePH` is a R package to fit the proportional hazards model with the sieve maximum full likelihood estimation. Unlike the conventional partial likelihood approach, the full likelihood method utilizes whole likelihood information in estimating procedure. In this package, we provide two functions `smle_ph` and `smle_resid`. `smle_ph` fits the proportional hazards model and estimates the baseline cumulative hazard function. `smle_resid` estimates two types of residuals, (i) score residual for each covariate and (ii) deviance residual for linear combination of all covariates.
 
 ## Installation
+
+
+The released version of `smlePH` package from CRAN is available in CRAN
 ```r
-devtools::install_github(repo='taehwa015/sievePH')
+install.packages('smlePH')
+```
+and the development version is also available in Github 
+```r
+devtools::install_github(repo='taehwa015/smlePH')
 ```
 
-## Usage
-
-The `sievePH` package provides a sieve maximum full likelihood estimation for the proportional hazards model.
-See Halabi et al. (2024+) for more detailed description of the method.
-
-
-Below example is the phase 3 metastatic colorectal cancer clinical trial study.
-Since the event times are possibly correlated within same patient, 
-we regard patient id as the cluster. 
-To adjust informative cluster sizes, we further consider weight function,
-motivated by Wang and Zhao (2008).
-Larger cluster will be underweighted by letting `alpha = 1`, 
-while cluster structure will be ignored `alpha = 0`.
-Note that by letting `id = NULL`, we fit the univariate AFT model.
-```r
-library(PICBayes)
-data(mCRC)
-dt0 = as.data.frame(mCRC)
-d = with(dt0,
-         data.frame(U = ifelse(is.na(L), 0, L),
-                    V = ifelse(is.na(R), Inf, R),
-                    Delta = 1-IC,
-                    x1 = TRT_C,
-                    x2 = KRAS_C,
-                    id = SITE))
-U = d$U; V = d$V; X = cbind(d$x1, d$x2); Delta = d$Delta; id = d$id
-aft_rank(U = U, V = V, X = X, Delta = Delta, id = id, 
-         alpha = 1, type = "gehan", R = 10)
-aft_rank(U = U, V = V, X = X, Delta = Delta, id = id, 
-         alpha = 1, type = "logrank", R = 10)
-```
-
-## Reference
 
 

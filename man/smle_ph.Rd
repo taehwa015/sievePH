@@ -29,7 +29,7 @@ see Halabi et al., (2024+) for detailed method explanation.
 \examples{
 \dontrun{
 # Simulations
-library(sievePH)
+library(smlePH)
 set.seed(111)
 n = 200
 beta = c(1, -1, 0.5, -0.5, 1)
