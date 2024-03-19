@@ -23,6 +23,27 @@ NULL
 #'
 #'
 #' @examples
+#' \dontshow{
+#' library(smlePH)
+#' set.seed(111)
+#' n = 200
+#' beta = c(1, -1, 0.5, -0.5, 1)
+#' p = length(beta)
+#' beta = matrix(beta, ncol = 1)
+#' R = matrix(c(rep(0, p^2)), ncol = p)
+#' diag(R) = 1
+#' mu = rep(0, p)
+#' SD = rep(1, p)
+#' S = R * (SD %*% t(SD))
+#' x = MASS::mvrnorm(n, mu, S)
+#' T = (-log(runif(n)) / (2 * exp(x %*% beta)))^(1/2)
+#' C = runif(n, min = 0, max = 2.9)
+#' y = apply(cbind(T,C), 1, min)
+#' d = (T <= C)+0
+#' ord = order(y)
+#' y = y[ord]; x = x[ord,]; d = d[ord]
+#' fit = smle_ph(y = y, d = d, x = x)
+#' }
 #' library(smlePH)
 #' # The 'fit' comes from an example description of smle_ph()
 #' smle_resid(y = y, d = d, x = x, fit = fit, type = "deviance")

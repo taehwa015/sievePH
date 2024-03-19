@@ -50,8 +50,6 @@ smle_ph = function(y,
                    d,
                    x)
 {
-  require(splines2)
-  require(MASS)
   phfunc_sieve = function(y,
                           d,
                           x,
@@ -68,7 +66,7 @@ smle_ph = function(y,
       qq = seq(0,1,by=1/(nknots+1))[-c(1,nknots+2)]
       knots = quantile(ut,qq)
     }
-    msp = mSpline(ut,degree=degree,knots=knots,intercept = FALSE)
+    msp = splines2::mSpline(ut,degree=degree,knots=knots,intercept = FALSE)
     n = nrow(x)
     p = ncol(x)
     q = ncol(msp)
@@ -120,7 +118,7 @@ smle_ph = function(y,
     }
     B = slike(theta)
     Cmat = crossprod((A - B), (A - B))/hn^2
-    sqrt(diag(ginv( Cmat + diag(1e-4, p+q) )))[1:p]
+    sqrt(diag(MASS::ginv( Cmat + diag(1e-4, p+q) )))[1:p]
   }
 
   ord = order(y)
@@ -148,9 +146,6 @@ smle_ph = function(y,
 
 
 # roxygen2::roxygenize()
-# 
 # devtools::build_manual()
-# 
 # devtools::check(cran=TRUE)
-# 
 # https://win-builder.r-project.org/upload.aspx
