@@ -27,8 +27,6 @@ Fit the proportional hazards model with maximum full likelihood estimation. Siev
 see Halabi et al., (2024+) for detailed method explanation.
 }
 \examples{
-\dontrun{
-# Simulations
 library(smlePH)
 set.seed(111)
 n = 200
@@ -48,7 +46,6 @@ d = (T <= C)+0
 ord = order(y)
 y = y[ord]; x = x[ord,]; d = d[ord]
 smle_ph(y = y, d = d, x = x)
-}
 }
 \references{
 Halabi et al., (2024+) Sieve maximum full likelihood estimation for the proportional hazards model

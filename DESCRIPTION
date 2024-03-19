@@ -1,5 +1,5 @@
 Type: Package
-Package: sievePH
+Package: smlePH
 Title: Sieve Maximum Full Likelihood Estimation for the Right-censored Proportional Hazards Model
 Version: 0.1.0
 Authors@R: c(
@@ -16,24 +16,17 @@ Authors@R: c(
 	   role = c("aut"),
 	   email = "yuan.wu@duke.edu"))
 Author: Susan Halabi [aut],
-    Taehwa Choi [aut, cre],
-    Yuan Wu [aut]
+    	Taehwa Choi [aut, cre],
+        Yuan Wu [aut]
 Maintainer: Taehwa Choi <taehwa015@gmail.com>
 Description: Fitting the full likelihood proportional hazards model and
     extracting the residuals.
 URL: https://github.com/taehwa015/smlePH/
 BugReports: https://github.com/taehwa015/smlePH/issues/
 License: GPL-3
-Imports: 
-    MASS,
-    splines2,
-    stats
+Imports: MASS, splines2, stats
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
+Suggests: knitr, rmarkdown
 VignetteBuilder: knitr

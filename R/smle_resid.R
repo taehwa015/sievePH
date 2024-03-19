@@ -10,7 +10,7 @@ NULL
 #' @param y survival time (> 0).
 #' @param d right-censoring indicator, \code{1}: observed; \code{0}: right-censored.
 #' @param x p-dimensional covariates matrix.
-#' @param fit an object from the function \code{smle_ph}.
+#' @param fit an object comes from the function \code{smle_ph}.
 #' @param type type of residual, either \code{deviance} or \code{score}.
 #'
 #' @return \code{smle_resid} returns a numeric vector (if \code{type = "deviance"}) or a matrix (if \code{type = "score"}) of residuals extracted from the \code{object}.
@@ -23,30 +23,10 @@ NULL
 #'
 #'
 #' @examples
-#' \dontrun{
-#' # Simulations
 #' library(smlePH)
-#' set.seed(111)
-#' n = 200
-#' beta = c(1, -1, 0.5, -0.5, 1)
-#' p = length(beta)
-#' beta = matrix(beta, ncol = 1)
-#' R = matrix(c(rep(0, p^2)), ncol = p)
-#' diag(R) = 1
-#' mu = rep(0, p)
-#' SD = rep(1, p)
-#' S = R * (SD %*% t(SD))
-#' x = MASS::mvrnorm(n, mu, S)
-#' T = (-log(runif(n)) / (2 * exp(x %*% beta)))^(1/2)
-#' C = runif(n, min = 0, max = 2.9)
-#' y = apply(cbind(T,C), 1, min)
-#' d = (T <= C)+0
-#' ord = order(y)
-#' y = y[ord]; x = x[ord,]; d = d[ord]
-#' fit = smle_ph(y = y, d = d, x = x)
+#' # The 'fit' comes from an example description of smle_ph()
 #' smle_resid(y = y, d = d, x = x, fit = fit, type = "deviance")
 #' smle_resid(y = y, d = d, x = x, fit = fit, type = "score")
-#' }
 #' @export
 
 

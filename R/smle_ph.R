@@ -25,8 +25,6 @@ NULL
 #'
 #'
 #' @examples
-#' \dontrun{
-#' # Simulations
 #' library(smlePH)
 #' set.seed(111)
 #' n = 200
@@ -46,7 +44,6 @@ NULL
 #' ord = order(y)
 #' y = y[ord]; x = x[ord,]; d = d[ord]
 #' smle_ph(y = y, d = d, x = x)
-#' }
 #' @export
 
 smle_ph = function(y,
@@ -150,5 +147,10 @@ smle_ph = function(y,
 
 
 
-# devtools::check(cran=TRUE)
 # roxygen2::roxygenize()
+# 
+# devtools::build_manual()
+# 
+# devtools::check(cran=TRUE)
+# 
+# https://win-builder.r-project.org/upload.aspx
